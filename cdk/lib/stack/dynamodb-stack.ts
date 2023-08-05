@@ -15,13 +15,5 @@ export class PlannerDynamoDBStack extends cdk.Stack {
         billingMode: BillingMode.PAY_PER_REQUEST,
         removalPolicy: cdk.RemovalPolicy.DESTROY, // 스택 삭제시 테이블도 함께 삭제합니다.
     });
-
-    const userTable = new Table(this, 'PlannerUser', {
-        tableName : 'PlannerUser',
-        partitionKey: { name: 'ID', type: AttributeType.STRING },
-        billingMode: BillingMode.PAY_PER_REQUEST, // 또는 PAY_PER_REQUEST
-        removalPolicy: cdk.RemovalPolicy.DESTROY, // 스택 삭제시 테이블도 함께 삭제합니다.
-      });
-      dataTable.node.addDependency(userTable)
   }
 }
