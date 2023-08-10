@@ -2,22 +2,16 @@
 import 'source-map-support/register';
 import * as cdk from 'aws-cdk-lib';
 import { PlannerStack } from '../lib/planner-stack';
+import { getAccountUniqueName, getDevAccount } from '../lib/config/accounts';
 
 const app = new cdk.App();
-new PlannerStack(app, 'plannerStack', {
-  /* If you don't specify 'env', this stack will be environment-agnostic.
-   * Account/Region-dependent features and context lookups will not work,
-   * but a single synthesized template can be deployed anywhere. */
 
-  /* Uncomment the next line to specialize this stack for the AWS Account
-   * and Region that are implied by the current CLI configuration. */
-  // env: { account: process.env.CDK_DEFAULT_ACCOUNT, region: process.env.CDK_DEFAULT_REGION },
-
-  /* Uncomment the next line if you know exactly what Account and Region you
-   * want to deploy the stack to. */
-  env: { account: '382048611400', region: 'ap-northeast-2' }
-
-  /* For more information, see https://docs.aws.amazon.com/cdk/latest/guide/environments.html */
-});
+const devAccount = getDevAccount('team3')
+if (devAccount !== undefined) {
+    new PlannerStack(app, `${getAccountUniqueName(devAccount)}`, {
+    env: devAccount,
+    context: devAccount,
+  })
+}
 
 app.synth()

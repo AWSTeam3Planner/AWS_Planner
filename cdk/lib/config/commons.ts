@@ -1,1 +1,1 @@
-export const SYSTEM_NAME = 'Planner';
+export const SYSTEM_NAME = 'Planner'
