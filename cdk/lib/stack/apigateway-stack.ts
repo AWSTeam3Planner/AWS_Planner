@@ -54,7 +54,7 @@ export class PlannerAPIgatewayStack extends cdk.Stack {
         const del = lambda.Function.fromFunctionArn(this,'deleteFunction',deleteARN)
 
         //main resource definition
-        const mainResource = api.root;
+        const mainResource = api.root.addResource('main');
 
         //create
         mainResource.addMethod('POST', new apigateway.LambdaIntegration(create),{
