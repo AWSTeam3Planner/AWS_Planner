@@ -1,43 +1,49 @@
 import json
 import boto3
 
+REGION = 'ap-northeast-2'
+
 dynamodb = boto3.resource('dynamodb')
-table = dynamodb.Table('PlannerData')  # Make sure to update the table name
+table = dynamodb.Table('team3-icn-planner-table')
 
 def lambda_handler(event, context):
     try:
-        event_id = event['queryStringParameters']['event_id']
+        # Extract "index" from query string parameters
+        index = event['queryStringParameters']['Index']
+
+        # Extract attribute values from the request body
         event_data = json.loads(event['body'])
+        new_date = event_data.get('Date')
+        new_title = event_data.get('Title')
+        new_end_date = event_data.get('EndDate')
+        new_memo = event_data.get('Memo')
 
-        # Create the UpdateExpression and ExpressionAttributeValues for the attributes to be updated
-        update_expression = 'SET '
+        # Prepare the update expression and attribute values
+        update_expression_parts = []
         expression_attribute_values = {}
+        expression_attribute_names = {'#d': 'Date'}
 
-        if 'Date' in event_data:
-            update_expression += '#date = :eventDate, '
-            expression_attribute_values[':eventDate'] = event_data['Date']
+        if new_date:
+            update_expression_parts.append('#d = :d')
+            expression_attribute_values[':d'] = new_date
+        if new_title:
+            update_expression_parts.append('Title = :t')
+            expression_attribute_values[':t'] = new_title
+        if new_end_date:
+            update_expression_parts.append('EndDate = :ed')
+            expression_attribute_values[':ed'] = new_end_date
+        if new_memo:
+            update_expression_parts.append('Memo = :m')
+            expression_attribute_values[':m'] = new_memo
 
-        if 'Title' in event_data:
-            update_expression += 'Title = :title, '
-            expression_attribute_values[':title'] = event_data['Title']
+        update_expression = 'SET ' + ', '.join(update_expression_parts)
 
-        if 'EndDate' in event_data:
-            update_expression += 'EndDate = :endDate, '
-            expression_attribute_values[':endDate'] = event_data['EndDate']
-
-        if 'Memo' in event_data:
-            update_expression += 'Memo = :memo, '
-            expression_attribute_values[':memo'] = event_data['Memo']
-
-        # Remove the trailing comma from the UpdateExpression
-        update_expression = update_expression.rstrip(', ')
-
-        # Perform the update_item operation with the appropriate UpdateExpression and ExpressionAttributeValues
+        # Update the item with the specified index in the DynamoDB table
         response = table.update_item(
-            Key = {'ID': event_id},
+            Key = {'Index': index},
             UpdateExpression = update_expression,
             ExpressionAttributeValues = expression_attribute_values,
-            ExpressionAttributeNames = {'#date': 'Date'},  # Since 'Date' is a reserved keyword, use an alias (#date)
+            ExpressionAttributeNames = expression_attribute_names,
             ReturnValues = 'UPDATED_NEW'
         )
 

@@ -1,16 +1,18 @@
 import json
 import boto3
 
+REGION = 'ap-northeast-2'
+
 dynamodb = boto3.resource('dynamodb')
-table = dynamodb.Table('PlannerData')  # Make sure to update the table name
+table = dynamodb.Table('team3-icn-planner-table')
 
 def lambda_handler(event, context):
     try:
-        # Extract "event_id" from query string parameters
-        event_id = event['queryStringParameters']['event_id']
+        # Extract "index" from query string parameters
+        index = event['queryStringParameters']['Index']
 
-        # Delete the item with the specified "event_id"
-        response = table.delete_item(Key = {'ID': event_id})  # Assuming 'ID' is the primary key of your DynamoDB table
+        # Delete the item with the specified index from the DynamoDB table
+        response = table.delete_item(Key = {'Index': index})
 
         return {
             'statusCode': 200,
