@@ -4,89 +4,81 @@ import * as apigateway from 'aws-cdk-lib/aws-apigateway';
 import { Construct } from 'constructs';
 import * as cognito from 'aws-cdk-lib/aws-cognito';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
-
+import { getAccountUniqueName } from "../config/accounts";
+import { PlannerStackProps } from '../planner-stack';
+import { SYSTEM_NAME } from '../config/commons';
 
 export class PlannerAPIgatewayStack extends cdk.Stack {
     
-    constructor(scope: Construct, id: string, props?: cdk.StackProps) {
+    constructor(scope: Construct, id: string, props: PlannerStackProps) {
         super(scope, id, props);
 
-        const api = new apigateway.RestApi(this, 'Team3Planner', {
+        const api = new apigateway.RestApi(this, `Team3-${SYSTEM_NAME}`, {
             cloudWatchRole: true,
-            restApiName: 'Team3Planner',
+            restApiName: `${getAccountUniqueName(props.context)}-${SYSTEM_NAME}-api`,
             deploy: false,
             endpointTypes: [EndpointType.REGIONAL],
         });
 
-        // Import existing Cognito User Pool
-        const userPool = cognito.UserPool.fromUserPoolArn(this, 'PlannerUserPool', 'arn:aws:cognito-idp:ap-northeast-2:343102482966:userpool/ap-northeast-2_6TEGMI5ov');
+        //Cognito User Pool
+        const userPool = cognito.UserPool.fromUserPoolArn(this, `${getAccountUniqueName(props.context)}-${SYSTEM_NAME}-UserPool}`, 'arn:aws:cognito-idp:ap-northeast-2:842292639267:userpool/ap-northeast-2_SvFdT80N3');
 
-        // Import existing Cognito User Pool Client
-        const userPoolClient = cognito.UserPoolClient.fromUserPoolClientId(this, 'PlannerUserPoolClient', 'b6u1vg6re6dks25mqh37s96gq');
+        //Cognito User Pool Client
+        const userPoolClient = cognito.UserPoolClient.fromUserPoolClientId(this, `${getAccountUniqueName(props.context)}-${SYSTEM_NAME}-UserPoolClient`, '51p3o1cgahv8cvohe9ikpd2fp0');
 
         const cognitoAuthorizer = new apigateway.CognitoUserPoolsAuthorizer(this, 'CognitoAuthorizer', {
             cognitoUserPools: [userPool],
             authorizerName: 'CognitoAuthorizer',
         });
 
-
+        //withdraw
         const withdrawResource = api.root.addResource('withdraw');
-        const withdrawARN = 'arn:aws:lambda:ap-northeast-2:343102482966:function:Planner-withdraw'
+        const withdrawARN = 'arn:aws:lambda:ap-northeast-2:842292639267:function:team3-ICN-Planner-withdraw'
         const withdraw=lambda.Function.fromFunctionArn(this,'withdrawFunction',withdrawARN)
         withdrawResource.addMethod('DELETE', new apigateway.LambdaIntegration(withdraw),{
             authorizer: cognitoAuthorizer,
             authorizationType: apigateway.AuthorizationType.COGNITO,
         });
 
-        const yearResource = api.root.addResource('{year}').addResource('{month}');
-        /*년 숫자값 전달 람다함수 추가
-        const tossARN = '함수 ARN'
-        const toss=lambda.Function.fromFunctionArn(this,'tossFunction',tossARN)
-        yearResource.addMethod('POST', new LambdaIntegration(toss)),{
-            authorizer: cognitoAuthorizer,
-            authorizationType: apigateway.AuthorizationType.COGNITO,
-        }); 
-        */
+        //lambda function definition
+        const createARN = 'arn:aws:lambda:ap-northeast-2:842292639267:function:team3-ICN-Planner-create';
+        const create = lambda.Function.fromFunctionArn(this,'createFunction',createARN)
 
-        //day resource
-        const dayResource = yearResource.addResource('{day}');
-        /*데이터 입력 람다함수 추가
-        const createARN = '함수 ARN'
-        const create=lambda.Function.fromFunctionArn(this,'createFunction',createARN)
-        dayResource.addMethod('POST', new LambdaIntegration(create),{
-            authorizer: cognitoAuthorizer,
-            authorizationType: apigateway.AuthorizationType.COGNITO,
-        }); 
-        */
+        const readARN = 'arn:aws:lambda:ap-northeast-2:842292639267:function:team3-ICN-Planner-read';
+        const read = lambda.Function.fromFunctionArn(this,'readFunction',readARN)
+        
+        const updateARN = 'arn:aws:lambda:ap-northeast-2:842292639267:function:team3-ICN-Planner-update';4
+        const update = lambda.Function.fromFunctionArn(this,'updateFunction',updateARN)
+        
+        const deleteARN = 'arn:aws:lambda:ap-northeast-2:842292639267:function:team3-ICN-Planner-delete';
+        const del = lambda.Function.fromFunctionArn(this,'deleteFunction',deleteARN)
 
-        //data index resource
-        const indexResource = dayResource.addResource('{index}')
-        /*내용 조회 람다함수 추가
-        const readARN = '함수 ARN'
-        const read=lambda.Function.fromFunctionArn(this,'readFunction',readARN)
-        dayResource.addMethod('POST', new LambdaIntegration(read),{
-            authorizer: cognitoAuthorizer,
-            authorizationType: apigateway.AuthorizationType.COGNITO,
-        }); 
-        */
+        //main resource definition
+        const mainResource = api.root.addResource('main');
 
-        /*내용 수정 람다함수 추가
-        const updateARN = '함수 ARN'
-        const update=lambda.Function.fromFunctionArn(this,'updateFunction',updateARN)
-        dayResource.addMethod('PUT', new LambdaIntegration(update),{
+        //create
+        mainResource.addMethod('POST', new apigateway.LambdaIntegration(create),{
             authorizer: cognitoAuthorizer,
             authorizationType: apigateway.AuthorizationType.COGNITO,
-        }); 
-        */
+        })
 
-        /*내용 삭제 람다함수 추가
-        const deleteARN = '함수 ARN'
-        const delete=lambda.Function.fromFunctionArn(this,'deleteFunction',deleteARN)
-        dayResource.addMethod('DELETE', new LambdaIntegration(delete),{
+        //read
+        mainResource.addMethod('GET', new apigateway.LambdaIntegration(read),{
             authorizer: cognitoAuthorizer,
             authorizationType: apigateway.AuthorizationType.COGNITO,
-        }); 
-        */
+        })
+
+        //update
+        mainResource.addMethod('PUT', new apigateway.LambdaIntegration(update),{
+            authorizer: cognitoAuthorizer,
+            authorizationType: apigateway.AuthorizationType.COGNITO,
+        })
+
+        //delete
+        mainResource.addMethod('DELETE', new apigateway.LambdaIntegration(del),{
+            authorizer: cognitoAuthorizer,
+            authorizationType: apigateway.AuthorizationType.COGNITO,
+        })
     }
 }
 
