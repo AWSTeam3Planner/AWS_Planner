@@ -4,15 +4,15 @@ import boto3
 REGION = 'ap-northeast-2'
 
 dynamodb = boto3.resource('dynamodb')
-table = dynamodb.Table('PlannerData')
+table = dynamodb.Table('team3-icn-planner-table')
 
 def lambda_handler(event, context):
     try:
-        # Extract "event_id" from query string parameters
-        event_id = event['queryStringParameters']['event_id']
+        # Extract "index" from query string parameters
+        index = event['queryStringParameters']['Index']
 
-        # Get the item with the specified "event_id" from the DynamoDB table
-        response = table.get_item(Key={'ID': event_id})  # Assuming 'ID' is the primary key of your DynamoDB table
+        # Get the item with the specified index from the DynamoDB table
+        response = table.get_item(Key = {'Index': index})
 
         if 'Item' in response:
             # Item found, return the item data as a response
