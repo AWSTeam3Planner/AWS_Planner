@@ -1,84 +1,90 @@
-import { EndpointType } from '@aws-cdk/aws-apigateway';
-import * as cdk from 'aws-cdk-lib';
-import * as apigateway from 'aws-cdk-lib/aws-apigateway';
-import { Construct } from 'constructs';
-import * as cognito from 'aws-cdk-lib/aws-cognito';
-import * as lambda from 'aws-cdk-lib/aws-lambda';
+import { EndpointType } from "@aws-cdk/aws-apigateway";
+import * as cdk from "aws-cdk-lib";
+import * as apigateway from "aws-cdk-lib/aws-apigateway";
+import { Construct } from "constructs";
+import * as lambda from "aws-cdk-lib/aws-lambda";
 import { getAccountUniqueName } from "../config/accounts";
-import { PlannerStackProps } from '../planner-stack';
-import { SYSTEM_NAME } from '../config/commons';
+import { PlannerStackProps } from "../planner-stack";
+import { SYSTEM_NAME } from "../config/commons";
 
 export class PlannerAPIgatewayStack extends cdk.Stack {
-    
-    constructor(scope: Construct, id: string, props: PlannerStackProps) {
-        super(scope, id, props);
+  constructor(scope: Construct, id: string, props: PlannerStackProps) {
+    super(scope, id, props);
 
-        const api = new apigateway.RestApi(this, `Team3-${SYSTEM_NAME}`, {
-            cloudWatchRole: true,
-            restApiName: `${getAccountUniqueName(props.context)}-${SYSTEM_NAME}-api`,
-            deploy: false,
-            endpointTypes: [EndpointType.REGIONAL],
-        });
+    const api = new apigateway.RestApi(this, `Team3-${SYSTEM_NAME}`, {
+      cloudWatchRole: true,
+      restApiName: `${getAccountUniqueName(props.context)}-${SYSTEM_NAME}-api`,
+      deploy: false,
+      endpointTypes: [EndpointType.REGIONAL],
+    });
 
-        //Cognito User Pool
-        const userPool = cognito.UserPool.fromUserPoolArn(this, `${getAccountUniqueName(props.context)}-${SYSTEM_NAME}-UserPool}`, 'arn:aws:cognito-idp:ap-northeast-2:842292639267:userpool/ap-northeast-2_SvFdT80N3');
+    //cors 옵션 설정
+    const corsOptions: apigateway.CorsOptions = {
+      allowOrigins: apigateway.Cors.ALL_ORIGINS,
+      allowMethods: apigateway.Cors.ALL_METHODS,
+    };
 
-        //Cognito User Pool Client
-        const userPoolClient = cognito.UserPoolClient.fromUserPoolClientId(this, `${getAccountUniqueName(props.context)}-${SYSTEM_NAME}-UserPoolClient`, '51p3o1cgahv8cvohe9ikpd2fp0');
+    //lambda function definition
+    const createARN =
+      "arn:aws:lambda:ap-northeast-2:842292639267:function:team3-ICN-Planner-create";
+    const create = lambda.Function.fromFunctionArn(
+      this,
+      "createFunction",
+      createARN
+    );
 
-        const cognitoAuthorizer = new apigateway.CognitoUserPoolsAuthorizer(this, 'CognitoAuthorizer', {
-            cognitoUserPools: [userPool],
-            authorizerName: 'CognitoAuthorizer',
-        });
+    const readARN =
+      "arn:aws:lambda:ap-northeast-2:842292639267:function:team3-ICN-Planner-read";
+    const read = lambda.Function.fromFunctionArn(this, "readFunction", readARN);
 
-        //withdraw
-        const withdrawResource = api.root.addResource('withdraw');
-        const withdrawARN = 'arn:aws:lambda:ap-northeast-2:842292639267:function:team3-ICN-Planner-withdraw'
-        const withdraw=lambda.Function.fromFunctionArn(this,'withdrawFunction',withdrawARN)
-        withdrawResource.addMethod('DELETE', new apigateway.LambdaIntegration(withdraw),{
-            authorizer: cognitoAuthorizer,
-            authorizationType: apigateway.AuthorizationType.COGNITO,
-        });
+    const updateARN =
+      "arn:aws:lambda:ap-northeast-2:842292639267:function:team3-ICN-Planner-update";
+    4;
+    const update = lambda.Function.fromFunctionArn(
+      this,
+      "updateFunction",
+      updateARN
+    );
 
-        //lambda function definition
-        const createARN = 'arn:aws:lambda:ap-northeast-2:842292639267:function:team3-ICN-Planner-create';
-        const create = lambda.Function.fromFunctionArn(this,'createFunction',createARN)
+    const deleteARN =
+      "arn:aws:lambda:ap-northeast-2:842292639267:function:team3-ICN-Planner-delete";
+    const del = lambda.Function.fromFunctionArn(
+      this,
+      "deleteFunction",
+      deleteARN
+    );
 
-        const readARN = 'arn:aws:lambda:ap-northeast-2:842292639267:function:team3-ICN-Planner-read';
-        const read = lambda.Function.fromFunctionArn(this,'readFunction',readARN)
-        
-        const updateARN = 'arn:aws:lambda:ap-northeast-2:842292639267:function:team3-ICN-Planner-update';4
-        const update = lambda.Function.fromFunctionArn(this,'updateFunction',updateARN)
-        
-        const deleteARN = 'arn:aws:lambda:ap-northeast-2:842292639267:function:team3-ICN-Planner-delete';
-        const del = lambda.Function.fromFunctionArn(this,'deleteFunction',deleteARN)
+    const withdrawARN =
+      "arn:aws:lambda:ap-northeast-2:842292639267:function:team3-ICN-Planner-withdraw";
+    const withdraw = lambda.Function.fromFunctionArn(
+      this,
+      "withdrawFunction",
+      withdrawARN
+    );
 
-        //main resource definition
-        const mainResource = api.root.addResource('main');
+    //main resource definition
+    const mainResource = api.root.addResource("planner");
+    mainResource.addCorsPreflight(corsOptions);
 
-        //create
-        mainResource.addMethod('POST', new apigateway.LambdaIntegration(create),{
-            authorizer: cognitoAuthorizer,
-            authorizationType: apigateway.AuthorizationType.COGNITO,
-        })
+    //create
+    mainResource.addMethod("POST", new apigateway.LambdaIntegration(create));
 
-        //read
-        mainResource.addMethod('GET', new apigateway.LambdaIntegration(read),{
-            authorizer: cognitoAuthorizer,
-            authorizationType: apigateway.AuthorizationType.COGNITO,
-        })
+    //read
+    mainResource.addMethod("GET", new apigateway.LambdaIntegration(read));
 
-        //update
-        mainResource.addMethod('PUT', new apigateway.LambdaIntegration(update),{
-            authorizer: cognitoAuthorizer,
-            authorizationType: apigateway.AuthorizationType.COGNITO,
-        })
+    //update
+    mainResource.addMethod("PUT", new apigateway.LambdaIntegration(update));
 
-        //delete
-        mainResource.addMethod('DELETE', new apigateway.LambdaIntegration(del),{
-            authorizer: cognitoAuthorizer,
-            authorizationType: apigateway.AuthorizationType.COGNITO,
-        })
-    }
+    //delete
+    mainResource.addMethod("DELETE", new apigateway.LambdaIntegration(del));
+
+    //withdraw resource definition
+    const withdrawResource = mainResource.addResource("withdraw");
+    withdrawResource.addCorsPreflight(corsOptions);
+
+    withdrawResource.addMethod(
+      "DELETE",
+      new apigateway.LambdaIntegration(withdraw)
+    );
+  }
 }
-
