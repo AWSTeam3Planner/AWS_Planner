@@ -11,8 +11,8 @@ aws 서비스를 이용한 서버리스 플래너 어플리케이션
 
 ### 🧑‍🤝‍🧑 맴버구성
  - 팀장  : 김백유 - 
- - 팀원1 : 박민준 - lambda와 congito,api gateway cdk 구성, 로그인 ui 구현, 사용자 관리 기능 백엔
- - 팀원2 : 정진서 - 
+ - 팀원1 : 박민준 - lambda와 congito, api gateway cdk 구성, 로그인 ui 구현, 사용자 관리 기능 백엔드
+ - 팀원2 : 정진서 - 플래너 CRUD 기능 lambda 구현, 일정 DB 구성
 
 
 ### ⚙️ 개발 환경
