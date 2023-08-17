@@ -8,11 +8,18 @@ table = dynamodb.Table('team3-icn-planner-table')
 
 def lambda_handler(event, context):
     try:
-        # Extract "index" from query string parameters
-        index = event['queryStringParameters']['Index']
+        # Extract values from JSON payload
+        payload = json.loads(event['body'])
+        user_id_value = payload['ID']
+        index_value = payload['Index']
 
         # Delete the item with the specified index from the DynamoDB table
-        response = table.delete_item(Key = {'Index': index})
+        response = table.delete_item(
+            Key={
+                'ID': user_id_value,
+                'Index': index_value
+            }
+        )
 
         return {
             'statusCode': 200,
