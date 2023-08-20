@@ -1,0 +1,10 @@
+/* CustomCalendar.css */
+
+/* 화면 가운데 정렬을 위한 스타일 */
+.calendar-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 40vh; /* 전체 화면 높이만큼 설정 */
+  }
+
