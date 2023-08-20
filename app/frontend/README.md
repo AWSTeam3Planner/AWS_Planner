@@ -13,13 +13,16 @@
 #### - 로그아웃시 로그인화면으로 이동 구현.
 
 #### - 로그아웃, 회원탈퇴 버튼 구현.
-![planner 화면](https://github.com/kimbaekyu/Planner_front/assets/80037923/13d5b471-ea7a-493e-8889-27d02bea0ad8)
+![화면수정](https://github.com/AWSTeam3Planner/AWS_Planner/assets/80037923/731b788f-287c-4c57-b270-f4b422a8f9b0)
+
+#### - 모든 일정 조회 버튼 클릭 시 등록되어 있는 모든 일정 modal 창으로 표시
+![모든일정모달창구현](https://github.com/AWSTeam3Planner/AWS_Planner/assets/80037923/6c5a402c-3e46-4d57-81da-988c15438eca)
 
 #### - 입력, 수정, 삭제 버튼 메인헤더에 modal로 구현.
-![일정등록](https://github.com/kimbaekyu/Planner_front/assets/80037923/102066c0-cbdd-43ac-b44d-351c86151924)
+![image](https://github.com/AWSTeam3Planner/AWS_Planner/assets/80037923/6b2c7172-0ed7-430b-becd-a6fda70de463)
 
 #### - 회원탈퇴 성공시 modal 창으로 표시 이후 로그인화면으로 전환 구현.
-![회원탈퇴 성공](https://github.com/kimbaekyu/Planner_front/assets/80037923/d1b133e0-6fb3-4d70-bca1-bd411da12d07)
+![image](https://github.com/AWSTeam3Planner/AWS_Planner/assets/80037923/6e8203b6-81c1-4c9d-abb1-b3d9fa846b49)
 
 
 
