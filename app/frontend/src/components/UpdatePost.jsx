@@ -3,21 +3,19 @@ import { useState } from 'react';
 
 
 
-function UpdatePost({onCancel,onDate}) {
-  const [enteredId, setEnteredId] = useState("");
+function UpdatePost({onCancel,onDate,setId, setToken}) {
+  
   const [enteredDate, setEnteredDate] = useState("");
   const [enteredMemo, setEnteredMemo] = useState("");
   const [enteredTitle, setEnteredTitle] = useState("");
   const [enteredEndDate, setEnteredEndDate] = useState("");
   const [responseMessage, setResponseMessage] = useState('');
   
-  var ID;
+  
   var Title;
   var EndDate;
-  var memo;
-  function dateChangeHandler(event) {
-    setEnteredDate(event.target.value);
-  }
+  var Memo;
+  
 
   function memoChangeHandler(event) {
     setEnteredMemo(event.target.value);
@@ -31,17 +29,15 @@ function UpdatePost({onCancel,onDate}) {
     setEnteredEndDate(event.target.value);
   }
 
-  function idChangeHandler(event) {
-    setEnteredId(event.target.value);
-  }
+  
   function submitHandler(event){
     event.preventDefault();
     const postData = {
-      ID:enteredId,
+      ID:setId,
       Title:enteredTitle,
       DATE: onDate,
       EndDate:enteredEndDate,
-      memo: enteredMemo
+      Memo: enteredMemo
     };
 
     console.log(postData);
@@ -52,9 +48,9 @@ function UpdatePost({onCancel,onDate}) {
 
   const handleUpdateRequest = async () => {
     try {
-      const token = "eyJraWQiOiJNOHhQNjlxVFJIZFBVZ3hmYnJYcU43YW5HSFMxYjNBWlBjYlp5dDNHbVV3PSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiI1N2I0MjhiNS05YWM3LTQ0MDctYTc4Mi0yY2FiNTQ4ZjQ0ZjUiLCJpc3MiOiJodHRwczpcL1wvY29nbml0by1pZHAuYXAtbm9ydGhlYXN0LTIuYW1hem9uYXdzLmNvbVwvYXAtbm9ydGhlYXN0LTJfbnJpU0lYbHVIIiwiY2xpZW50X2lkIjoiMjMyYzkza2diNWtxNTA5cXU0NXY4NWEyM20iLCJvcmlnaW5fanRpIjoiMTExNTM3NjctZTRhYy00MmZhLWEwN2EtODU5ZWMwY2ExYjM0IiwiZXZlbnRfaWQiOiI1MmE4NTM0OC1hMDU3LTQ3YmYtOGZkMC0yZjk1YmZhYzFhYTkiLCJ0b2tlbl91c2UiOiJhY2Nlc3MiLCJzY29wZSI6ImF3cy5jb2duaXRvLnNpZ25pbi51c2VyLmFkbWluIiwiYXV0aF90aW1lIjoxNjkyMjQ5Njk2LCJleHAiOjE2OTIyNTMyOTYsImlhdCI6MTY5MjI0OTY5NiwianRpIjoiZTIwZTRmODQtYzhiMy00OTU4LTlhZmEtMTIyY2U4OWI0YTQxIiwidXNlcm5hbWUiOiJhbHN3bnMifQ.HkN5RcqJbZDVPqGAz1-chwLqI69_WspB-GzdjWq9zcxF8j5AgI-JFZcAByoNzTmuM1_4_5aslfV46vSbdQsnNSWSnOraCTORNoB7XcJQeSsr42j8yRE0-1RFvu6CK8oE2W6XRbeKhKyvqPzb4oK4RVmsAFvdN0S5Y8_000UN0G17GyEyujYuLg2B5yqlqSMo3UyNTwCIvTyHb4DVM6mt4cJG-PVxcCvl0hBOpefoGXH31wFw1dWbFUj_B_5H_9FDZArqi9Hu8BJCz0pfMz7_Sy8YaCiX6trYBKXQwP0z9BUahF7BvQAAWp66MYJXYxGxnv0K9bxHdiFhBNdJkMV_jw";
+      const token = setToken;
       const payload = {
-      "ID": "alswns",
+      "ID": setId,
       "Index": 1
       };
     const lambdaEndpoint = "https://28ficn77c1.execute-api.ap-northeast-2.amazonaws.com/test/planner";
@@ -65,11 +61,11 @@ function UpdatePost({onCancel,onDate}) {
       'Authorization': `Bearer ${token}` // 토큰을 "Bearer" 스타일로 전달
     },
     body: JSON.stringify({ 
-      ID:enteredId,
+      ID: setId,
       Title:enteredTitle,
       DATE: onDate,
       EndDate:enteredEndDate,
-      memo: enteredMemo
+      Memo: enteredMemo
       }),
     });
       
@@ -88,11 +84,10 @@ function UpdatePost({onCancel,onDate}) {
       <form className={classes.form} onSubmit={submitHandler}>
     
       <p>
-        <label htmlFor="title">UPDATE</label>
+        <label htmlFor="title">일정 수정</label>
      </p>
       <p>
-      <label htmlFor="id">id</label>
-      <input type="text" id="id" required onChange={idChangeHandler}/>
+      <label htmlFor="id">ID: {setId} </label>
       </p>
       <p>
         <label htmlFor="title">Title</label>
@@ -106,7 +101,7 @@ function UpdatePost({onCancel,onDate}) {
         <label htmlFor="enddate">End Date</label>
         <input type="text" id="enddate" required onChange={endDateChangeHandler}/>
       </p>
-      <label htmlFor="memo">memo</label>
+      <label htmlFor="memo">Memo</label>
         <textarea  id="memo" required rows={3}  onChange={memoChangeHandler}/>
       <p>
         

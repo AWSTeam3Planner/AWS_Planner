@@ -1,32 +1,3 @@
-# Login Front
-
-#### - 회원가입, 로그인 화면 구현(로그인 성공 시 Planner화면으로 전환)
-![화면 캡처 2023-08-19 182803](https://github.com/kimbaekyu/Planner_front/assets/80037923/ce760e47-4d93-4263-b448-be3a57c43b53)
-
-#### - 회원가입 시 이메일 확인 modal 창 구현
-![회원가입 성공](https://github.com/kimbaekyu/Planner_front/assets/80037923/81f34e9b-d2b8-4ff8-9542-0c4997d9c6ed)
-
-# Planner Front
-#### - 달력을 통해 년도,날짜 선택가능
-#### - 일정이 존재하면 날짜 밑에 점으로 표시
-#### - 선택된 날짜에 일정 정보를 화면 밑에 표시
-#### - 로그아웃시 로그인화면으로 이동 구현.
-
-#### - 로그아웃, 회원탈퇴 버튼 구현.
-![planner 화면](https://github.com/kimbaekyu/Planner_front/assets/80037923/13d5b471-ea7a-493e-8889-27d02bea0ad8)
-
-#### - 입력, 수정, 삭제 버튼 메인헤더에 modal로 구현.
-![일정등록](https://github.com/kimbaekyu/Planner_front/assets/80037923/102066c0-cbdd-43ac-b44d-351c86151924)
-
-#### - 회원탈퇴 성공시 modal 창으로 표시 이후 로그인화면으로 전환 구현.
-![회원탈퇴 성공](https://github.com/kimbaekyu/Planner_front/assets/80037923/d1b133e0-6fb3-4d70-bca1-bd411da12d07)
-
-
-
-
-
-
-
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
@@ -97,3 +68,9 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+### <Planner Front - planner부분만 내가 담당>
+#### - 일정이 존재하면 날짜 밑에 점으로 표시
+#### - 선택된 날짜에 일정 정보를 화면 밑에 표시
+#### - 입력, 수정, 삭제 버튼 메인헤더에 modal로 구현.
+![화면 캡처 2023-08-18 105756](https://github.com/kimbaekyu/Planner_front/assets/80037923/39691db4-ad59-49f0-a05f-496e55e4c945)

@@ -31,14 +31,7 @@ function App() {
       </Routes>
       </BrowserRouter>
     </Account>
-    // <BrowserRouter>
-    //   <div className="App">
-    //     <Routes>
-    //       <Route path="/" element={<LoginMain />} />
-    //       <Route path="/planner" element={<Planner />} />
-    //     </Routes>
-    //   </div>
-    // </BrowserRouter>
+   
   );
 }
 
