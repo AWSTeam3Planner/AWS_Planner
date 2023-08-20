@@ -1,3 +1,35 @@
+# Login Front
+
+#### - 회원가입, 로그인 화면 구현(로그인 성공 시 Planner화면으로 전환)
+![화면 캡처 2023-08-19 182803](https://github.com/kimbaekyu/Planner_front/assets/80037923/ce760e47-4d93-4263-b448-be3a57c43b53)
+
+#### - 회원가입 시 이메일 확인 modal 창 구현
+![회원가입 성공](https://github.com/kimbaekyu/Planner_front/assets/80037923/81f34e9b-d2b8-4ff8-9542-0c4997d9c6ed)
+
+# Planner Front
+#### - 달력을 통해 년도,날짜 선택가능
+#### - 일정이 존재하면 날짜 밑에 점으로 표시
+#### - 선택된 날짜에 일정 정보를 화면 밑에 표시
+#### - 로그아웃시 로그인화면으로 이동 구현.
+
+#### - 로그아웃, 회원탈퇴 버튼 구현.
+![화면수정](https://github.com/AWSTeam3Planner/AWS_Planner/assets/80037923/731b788f-287c-4c57-b270-f4b422a8f9b0)
+
+#### - 모든 일정 조회 버튼 클릭 시 등록되어 있는 모든 일정 modal 창으로 표시
+![모든일정모달창구현](https://github.com/AWSTeam3Planner/AWS_Planner/assets/80037923/6c5a402c-3e46-4d57-81da-988c15438eca)
+
+#### - 입력, 수정, 삭제 버튼 메인헤더에 modal로 구현.
+![image](https://github.com/AWSTeam3Planner/AWS_Planner/assets/80037923/6b2c7172-0ed7-430b-becd-a6fda70de463)
+
+#### - 회원탈퇴 성공시 modal 창으로 표시 이후 로그인화면으로 전환 구현.
+![image](https://github.com/AWSTeam3Planner/AWS_Planner/assets/80037923/6e8203b6-81c1-4c9d-abb1-b3d9fa846b49)
+
+
+
+
+
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
@@ -68,9 +100,3 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
-
-### <Planner Front - planner부분만 내가 담당>
-#### - 일정이 존재하면 날짜 밑에 점으로 표시
-#### - 선택된 날짜에 일정 정보를 화면 밑에 표시
-#### - 입력, 수정, 삭제 버튼 메인헤더에 modal로 구현.
-![화면 캡처 2023-08-18 105756](https://github.com/kimbaekyu/Planner_front/assets/80037923/39691db4-ad59-49f0-a05f-496e55e4c945)
