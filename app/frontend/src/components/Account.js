@@ -2,6 +2,7 @@ import React, { createContext } from "react";
 import Pool from "../UserPool";
 import { CognitoUser, AuthenticationDetails } from "amazon-cognito-identity-js";
 
+
 const AccountContext = createContext();
 
 const Account = (props) => {
@@ -32,6 +33,7 @@ const Account = (props) => {
       user.authenticateUser(authDetails, {
         onSuccess: (data) => {
           console.log("onSuccess: ", data);
+          
           resolve(data);
         },
         onFailure: (err) => {
@@ -54,11 +56,14 @@ const Account = (props) => {
   };
 
   return (
+    <>
     <AccountContext.Provider value={{ authenticate, getSession, logout }}>
       <div style={{ display: "flex", flexDirection: "column" }}>
         {props.children}
       </div>
     </AccountContext.Provider>
+    
+    </>
   );
 };
 export { Account, AccountContext };

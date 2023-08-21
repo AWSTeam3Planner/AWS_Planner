@@ -13,6 +13,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import Planner from "./Planner";
 import NewPost from "./NewPost";
+import Logout from "./Logout";
 
 
 const Login = () => {
@@ -20,19 +21,23 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const navigate = useNavigate(); //라우팅 전환 객체
   const { authenticate } = useContext(AccountContext);
-  
+  const [accessToken, setAccessToken] = useState(""); // 토큰 상태 추가
   
 
+  function usernameChangeHandler(event) {
+    setUsername(event.target.value);
+  }
+  
   const onSubmit = async (event) => {
     event.preventDefault();
 
     try {
       const data = await authenticate(username, password);
-
+      
       console.log("Logged in!", data);
 
       const accessToken = data.accessToken.jwtToken;
-
+      
       // ID 토큰을 사용하여 API Gateway에 요청 보내기
       const apiBaseUrl =
         "https://28ficn77c1.execute-api.ap-northeast-2.amazonaws.com/test";
@@ -44,18 +49,25 @@ const Login = () => {
         },
         mode: "cors",
       });
-
+      setAccessToken(accessToken); // 토큰 설정
+    
+      
       if (response.ok) {
         const apiData = await response.json();
         console.log("API Response:", apiData);
         
-        // 로그인 성공 후 다른 페이지로 이동
-        navigate('/planner');
+        
+        // 로그인 성공 후 다른 페이지로 이동 값 전달
+        navigate('/planner', {
+          state: {
+            username: username,
+            token: accessToken
+          }
+        });
         
       } else {
         console.error("API Error:", response.status, response.statusText);
-        navigate('/');
-        <planner onResponse={response.headers}/>
+        // navigate('/');
       }
     } catch (error) {
       console.error("Failed to login", error);
@@ -63,6 +75,8 @@ const Login = () => {
   };
 
   return (
+    <>
+    
     
     <MDBContainer fluid>
       <MDBRow className="d-flex justify-content-center align-items-center h-100">
@@ -84,7 +98,7 @@ const Login = () => {
                   wrapperClass="mb-4 mx-5 w-100"
                   labelClass="text-white"
                   value={username}
-                  onChange={(event) => setUsername(event.target.value)}
+                  onChange={usernameChangeHandler}
                   label="username"
                   id="formControlLg"
                   type="username"
@@ -119,6 +133,7 @@ const Login = () => {
       </MDBRow>
     </MDBContainer>
     
+    </>
   );
 };
 

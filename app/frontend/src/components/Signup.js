@@ -10,12 +10,13 @@ import {
   MDBCardBody,
   MDBInput,
 } from "mdb-react-ui-kit";
+import SuccessModal from "./SuccessModal";
 
 const Signup = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
-
+  const [showSuccessModal, setShowSuccessModal] = useState(false); // 모달 상태 추가
   const attributeData = new CognitoUserAttribute({
     Name: "email",
     Value: email,
@@ -29,10 +30,12 @@ const Signup = () => {
         console.error(err);
       }
       console.log(data);
+      setShowSuccessModal(true); // 모달 열기
     });
   };
 
   return (
+    <>
     <MDBContainer fluid>
       <MDBRow className="d-flex justify-content-center align-items-center h-100">
         <MDBCol col="12">
@@ -96,6 +99,8 @@ const Signup = () => {
         </MDBCol>
       </MDBRow>
     </MDBContainer>
+    <SuccessModal setText={"Please check your email for the verification code to complete signup."} isOpen={showSuccessModal} onClose={() => setShowSuccessModal(false)} />
+  </>
   );
 };
 
