@@ -13,11 +13,11 @@ const InfoModal = ({ isOpen, onClose, infoData }) => {
             <MDBModalBody>
               {dataToShow.map((item, index) => (
                 <div key={index}>
-                  <p>Title: {item.Title}</p>
-                  <p>Date: {item.DATE}</p>
-                  <p>Memo: {item.Memo}</p>
                   <p>Index: {item.Index}</p>
-                  <p>EndDate: {item.EndDate}</p>
+                  <p>Title: {item.Title}</p>
+                  <p>Date: {item.DATE} ~ {item.EndDate}</p>
+                  <p>Memo: {item.Memo}</p>
+                  
                   <hr />
                 </div>
               ))}
