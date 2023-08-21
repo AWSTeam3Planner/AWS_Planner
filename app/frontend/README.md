@@ -16,8 +16,7 @@
 ![화면수정](https://github.com/AWSTeam3Planner/AWS_Planner/assets/80037923/731b788f-287c-4c57-b270-f4b422a8f9b0)
 
 #### - 모든 일정 조회 버튼 클릭 시 등록되어 있는 모든 일정 modal 창으로 표시
-![모든일정모달창구현](https://github.com/AWSTeam3Planner/AWS_Planner/assets/80037923/6c5a402c-3e46-4d57-81da-988c15438eca)
-
+![image](https://github.com/AWSTeam3Planner/AWS_Planner/assets/80037923/e6f0188c-9dac-411f-8354-d463a5075654)
 #### - 입력, 수정, 삭제 버튼 메인헤더에 modal로 구현.
 ![image](https://github.com/AWSTeam3Planner/AWS_Planner/assets/80037923/6b2c7172-0ed7-430b-becd-a6fda70de463)
 
